@@ -1,0 +1,79 @@
+using System;
+
+namespace ConsoleApp2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Title = "Разница между датами";
+            bool exit = true;
+            while (exit)
+            {
+                Console.Clear();
+                int dd1, dd2, mm1, mm2, yy1, yy2, a1, a2, m1, m2, y1, y2, JDN1, JDN2, f1, f2, dayZ;
+                Console.WriteLine("Введите день");
+                dd1 = int.Parse(Console.ReadLine());
+                Console.WriteLine("Введите месяц");
+                mm1 = int.Parse(Console.ReadLine());
+                Console.WriteLine("Введите год");
+                yy1 = int.Parse(Console.ReadLine());
+                Console.Clear();
+                Console.WriteLine("Введите день");
+                dd2 = int.Parse(Console.ReadLine());
+                Console.WriteLine("Введите месяц");
+                mm2 = int.Parse(Console.ReadLine());
+                Console.WriteLine("Введите год");
+                yy2 = int.Parse(Console.ReadLine());
+                f1 = 28 + (mm1 + mm1 / 8) % 2 + 2 % mm1 + 1 / mm1 * 2;
+                f2 = 28 + (mm2 + mm2 / 8) % 2 + 2 % mm2 + 1 / mm2 * 2;
+                if (dd1 < 1 || dd2 < 1 || mm1 < 1 || mm2 < 1 || mm1 > 12 || mm2 > 12) continue;
+                if ((yy1 % 4 == 0 && yy1 % 100 != 0) || yy1 % 400 == 0)
+                {
+                    if (mm1 == 2 && dd1 > 29) continue;
+                    else if (dd1 > f1 && mm1 != 2) continue;
+                }
+                else if (dd1 > f1) continue;
+                if ((yy2 % 4 == 0 && yy2 % 100 != 0) || yy2 % 400 == 0)
+                {
+                    if (mm2 == 2 && dd2 > 29) continue;
+                    else if (dd2 > f1 && mm2 != 2) continue;
+                }
+                else if (dd2 > f2) continue;
+                a1 = (14 - mm1) / 12;
+                a2 = (14 - mm2) / 12;
+                y1 = yy1 + 4800 - a1;
+                y2 = yy2 + 4800 - a2;
+                m1 = mm1 + 12 * a1 - 3;
+                m2 = mm2 + 12 * a2 - 3;
+                JDN1 = dd1 + (153 * m1 + 2) / 5 + 365 * y1 + y1 / 4 - y1 / 100 + y1 / 400 - 32045;
+                JDN2 = dd2 + (153 * m2 + 2) / 5 + 365 * y2 + y2 / 4 - y2 / 100 + y2 / 400 - 32045;
+                dayZ = Math.Abs(JDN2 - JDN1);
+                Console.WriteLine($"Разница между двумя датами составляет: {dayZ} дней");
+                Console.WriteLine("\nЗавершить работу - Enter\nНачать заново - любая клавиша");
+                ConsoleKey consoleKey = Console.ReadKey().Key;
+                switch (consoleKey)
+                {
+                    case ConsoleKey.Enter:
+                        exit = false;
+                        break;
+                    default:
+                        exit = true;
+                        break;
+                }
+            }
+
+        }
+    }
+}
+
+/*Задание 6. Пользователь вводит две даты (день, месяц,
+год в виде целых чисел). Необходимо определить и 
+вывести количество дней между этими двумя датами. Для
+расчетов учитывать високосные года, а также корректное
+число дней в месяцах (март — 31, сентябрь — 30, февраль
+невисокосного года — 28 и т.д.).
+
+https://planetcalc.ru/274/ - калькулятор дат
+http://shpargalkablog.ru/2013/10/leap-year.html - доп. материал
+*/
